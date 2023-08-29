@@ -46,7 +46,7 @@ def load_words():
 def get_frequency_dict(sequence):
     """
     Returns a dictionary where the keys are elements of the sequence
-    and the values are integer counts, for the number of times that
+    and the values are intege)r counts, for the number of times that
     an element is repeated in the sequence.
 
     sequence: string or list
@@ -66,7 +66,7 @@ def get_frequency_dict(sequence):
 #
 # Problem #1: Scoring a word
 #
-def get_word_score(word, n):
+def get_word_score(word: str, n):
     """
     Returns the score for a word. Assumes the word is a
     valid word.
@@ -92,7 +92,13 @@ def get_word_score(word, n):
     returns: int >= 0
     """
     
-    pass  # TO DO... Remove this line when you implement this function
+    tmp_word = word.lower().strip()
+    sum_of_letters = 0
+    for letter in tmp_word:
+        sum_of_letters += SCRABBLE_LETTER_VALUES.get(letter, 0)
+
+
+    return sum_of_letters * max((7 * (len(word)) - 3 * (n - len(word))), 1)
 
 #
 # Make sure you understand how this function works and what it does!
@@ -136,9 +142,10 @@ def deal_hand(n):
     hand={}
     num_vowels = int(math.ceil(n / 3))
 
-    for i in range(num_vowels):
+    for i in range(num_vowels - 1):
         x = random.choice(VOWELS)
         hand[x] = hand.get(x, 0) + 1
+    hand["*"] = 1
     
     for i in range(num_vowels, n):    
         x = random.choice(CONSONANTS)
@@ -168,8 +175,15 @@ def update_hand(hand, word):
     returns: dictionary (string -> int)
     """
 
-    pass  # TO DO... Remove this line when you implement this function
+    copied_hand = hand.copy()
 
+    for letter in word.lower():
+        if letter in copied_hand.keys():
+            copied_hand[letter] -= 1
+            if copied_hand[letter] <= 0:
+                del copied_hand[letter]
+    
+    return copied_hand
 #
 # Problem #3: Test word validity
 #
@@ -184,9 +198,32 @@ def is_valid_word(word, hand, word_list):
     word_list: list of lowercase strings
     returns: boolean
     """
+    low_word = word.lower()
+    copied_hand = hand.copy()
+    wild_card_hit = False
 
-    pass  # TO DO... Remove this line when you implement this function
+    for letter in low_word:
+        if letter == "*":
+            for i in range(len(VOWELS)):
+                possible_word = low_word.replace('*', VOWELS[i])
+                if possible_word in word_list:
+                    wild_card_hit = True
 
+
+
+    if low_word in word_list or wild_card_hit:
+        for letter in low_word:
+            if letter in copied_hand:
+                copied_hand[letter] -= 1
+                if copied_hand[letter] < 0:
+                    return False
+            else:
+                return False
+        
+        return True
+    else:
+        return False
+  
 #
 # Problem #5: Playing a hand
 #
@@ -197,8 +234,12 @@ def calculate_handlen(hand):
     hand: dictionary (string-> int)
     returns: integer
     """
+    length = 0
+    for value in hand.keys():
+        length += hand.get(value, 0)
     
-    pass  # TO DO... Remove this line when you implement this function
+    return length
+
 
 def play_hand(hand, word_list):
 
