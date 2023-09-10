@@ -307,11 +307,8 @@ if __name__ == '__main__':
 
 
 #TODO: best shift value and unencrypted story 
-    ciphertext = CiphertextMessage('Mjqqt ymjwj') 
-    print('Expected output: (21, Hello there)') 
+    story = 'Xoqy Tzcfsm wg o amhvwqoz qvofoqhsf qfsohsr cb hvs gdif ct o acasbh hc vszd qcjsf ob wbgittwqwsbhzm dzobbsr voqy. Vs vog pssb fsuwghsfsr tcf qzoggsg oh AWH hkwqs pstcfs, pih vog fsdcfhsrzm bsjsf doggsr oqzogg. Wh vog pssb hvs hforwhwcb ct hvs fsgwrsbhg ct Sogh Qoadig hc psqcas Xoqy Tzcfsm tcf o tsk bwuvhg soqv msof hc sriqohs wbqcawbu ghirsbhg wb hvs komg, asobg, obr shvwqg ct voqywbu.'
+    ciphertext = CiphertextMessage(story) 
     print('Actual output: ', ciphertext.decrypt_message())
 
-    ciphertext = CiphertextMessage('Xnt zqd sgd adrs') 
-    print('Expected output: (1, You are the best)') 
-    print('Actual output: ', ciphertext.decrypt_message())
     

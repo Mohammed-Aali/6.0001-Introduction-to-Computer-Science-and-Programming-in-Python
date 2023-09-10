@@ -143,7 +143,7 @@ class SubMessage(object):
         for char in text:
             if char in transpose_dict.keys():
                 encrypted_word += transpose_dict[char]
-            else:
+            elif char == ' ':
                 encrypted_word += char
 
         return encrypted_word
@@ -160,7 +160,7 @@ class EncryptedSubMessage(SubMessage):
             self.message_text (string, determined by input text)
             self.valid_words (list, determined using helper function load_words)
         '''
-        pass #delete this line and replace with your code here
+        SubMessage.__init__(self, text)
 
     def decrypt_message(self):
         '''
@@ -180,19 +180,54 @@ class EncryptedSubMessage(SubMessage):
         
         Hint: use your function from Part 4A
         '''
-        pass #delete this line and replace with your code here
+        encrypted_msg = self.get_message_text()
+        list_of_perms = get_permutations(VOWELS_LOWER)
+        list_of_words = self.get_valid_words()
+        
+        for i in range(len(list_of_perms)):
+            mapping_dict = self.build_transpose_dict(list_of_perms[i])
+            decrypted_msg = self.apply_transpose(mapping_dict).split(' ')
+
+            words = 0
+            for word in decrypted_msg:
+                if word.lower() in list_of_words:
+                    words += 1
+                if len(decrypted_msg) == words:
+                    return " ".join(decrypted_msg)
+
+        
+
+        
+            
+                
+        return 'No good permutations were found for the string', encrypted_msg
+                
+
+            
+
+
     
 
 if __name__ == '__main__':
 
-    # Example test case
-    message = SubMessage("Hello World!")
-    permutation = "eaiuo" # Mapping is a->e, e->a, i->i, o->u, u->o
+    # # Example test case
+    # message = SubMessage("Hello World!")
+    # permutation = "eaiuo" # Mapping is a->e, e->a, i->i, o->u, u->o
+    # enc_dict = message.build_transpose_dict(permutation)
+    # print("Original message:", message.get_message_text(), "Permutation:", permutation)
+    # print("Expected encryption:", "Hallu Wurld!")
+    # print("Actual encryption:", message.apply_transpose(enc_dict))
+    # enc_message = EncryptedSubMessage(message.apply_transpose(enc_dict))
+    # print("Decrypted message:", enc_message.decrypt_message())
+     
+    #TODO: WRITE YOUR TEST CASES HERE
+
+    message = SubMessage('is it crazy?')
+    permutation = 'ieoua'
     enc_dict = message.build_transpose_dict(permutation)
     print("Original message:", message.get_message_text(), "Permutation:", permutation)
     print("Expected encryption:", "Hallu Wurld!")
     print("Actual encryption:", message.apply_transpose(enc_dict))
     enc_message = EncryptedSubMessage(message.apply_transpose(enc_dict))
     print("Decrypted message:", enc_message.decrypt_message())
-     
-    #TODO: WRITE YOUR TEST CASES HERE
+

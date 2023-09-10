@@ -16,7 +16,7 @@ print(x)
 def add_digits(s):
     """Assumes n is a nonnegative int
     Returns the sum of the digits in n"""
-    stringRep = intToStr(n)
+    stringRep = intToStr(s)
     val = 0
     for c in stringRep:
         val += int(c)
